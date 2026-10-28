@@ -355,7 +355,8 @@
 
 <div class="aviso" id="aviso"></div>
 
-<script src="dados.js"></script>
+<!-- carrega o dados.js sempre atualizado (o celular costuma guardar a versão antiga em cache) -->
+<script>document.write('<script src="dados.js?t=' + Date.now() + '"><\/script>');</script>
 <script>
 (function () {
   const C = window.CONFIG;
@@ -543,8 +544,9 @@
     const fotos = window.FOTOS || {};
     const abas = [...t.matchAll(/items\.push\(\{name: "((?:[^"\\]|\\.)*)", pageUrl: "[^"]*", gid: "(\d+)"/g)]
       .map((m) => ({ nome: JSON.parse(`"${m[1]}"`).trim(), gid: m[2] }));
-    const caixa = abas.find((a) => semAcento(a.nome).toLowerCase() === semAcento(C.atualizacao.aba).toLowerCase());
-    if (caixa) lerAtualizacao(caixa.gid);
+    const at = C.atualizacao || { aba: "CAIXA", celula: "B16" };
+    const caixa = abas.find((a) => semAcento(a.nome).toLowerCase() === semAcento(at.aba).toLowerCase());
+    if (caixa) lerAtualizacao(caixa.gid, at.celula);
     return abas
       .filter((j) => j.nome && !ignorar.includes(semAcento(j.nome).toLowerCase()))
       .map((j) => ({ ...j, foto: fotos[j.nome] || "" }))
@@ -552,11 +554,11 @@
   }
 
   // "Caixa atualizado em ..." = texto da célula configurada (ex.: CAIXA!B16)
-  async function lerAtualizacao(gid) {
+  async function lerAtualizacao(gid, celula) {
     try {
       const t = await fetch(`https://docs.google.com/spreadsheets/d/${C.planilhaId}/export?format=csv&gid=${gid}&t=${Date.now()}`, { cache: "no-store" })
         .then((r) => r.text());
-      const [, col, lin] = C.atualizacao.celula.toUpperCase().match(/^([A-Z])(\d+)$/);
+      const [, col, lin] = celula.toUpperCase().match(/^([A-Z])(\d+)$/);
       const texto = ((csv(t)[+lin - 1] || [])[col.charCodeAt(0) - 65] || "").trim();
       if (!texto) return;
       $("#atualizado").textContent = `Caixa atualizado em ${texto}`;
@@ -772,7 +774,9 @@
   });
 
   $("#seletor").options[0].text = "Carregando jogadores…";
-  lerJogadores().then((lista) => {
+  // tenta de novo uma vez antes de mostrar erro (internet do celular às vezes falha)
+  lerJogadores().catch(() => new Promise((ok) => setTimeout(ok, 1500)).then(lerJogadores)).then((lista) => {
+    if (!lista.length) throw new Error("nenhuma aba de jogador encontrada");
     jogadores = lista;
     $("#seletor").options[0].text = "Selecione seu nome…";
     montarEntrada();
@@ -780,10 +784,15 @@
     try { salvo = localStorage.getItem("jogador10ePouco"); } catch (e) {}
     const j = salvo && jogadores.find((x) => x.nome === salvo);
     if (j) { $("#seletor").value = jogadores.indexOf(j); $("#seletor").dispatchEvent(new Event("change")); }
-  }).catch(() => {
+  }).catch((e) => {
     $("#seletor").options[0].text = "Erro ao carregar a planilha";
+    $("#btnEntrar").disabled = false;
+    $("#btnEntrar").textContent = "Tentar de novo";
+    $("#btnEntrar").onclick = () => location.reload();
     if (location.protocol === "file:")
       avisar("Abra pelo abrir-site.bat (dois cliques no index.html não funciona)");
+    else
+      avisar("Erro: " + (e && e.message ? e.message : e)); // detalhe ajuda a descobrir o problema
   });
 })();
 </script>
