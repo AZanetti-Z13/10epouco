@@ -1,0 +1,766 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>10 e Pouco · Mensalidades</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* cores da logo: azul, vermelho e dourado */
+    --verde: #1f3f8f;
+    --verde-escuro: #142a63;
+    --ambar: #d1a646;
+    --ambar-claro: #fbf3df;
+    --fundo: #f5f2ee;
+    --cartao: #ffffff;
+    --texto: #1d1d1b;
+    --suave: #6b6a65;
+    --borda: #e3ded2;
+    --vermelho: #c0392b;
+    --vermelho-claro: #fdecea;
+    --ok: #1e7e4a;
+    --ok-claro: #e4f4ea;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Inter", system-ui, sans-serif;
+    background: var(--fundo);
+    color: var(--texto);
+    min-height: 100vh;
+  }
+  button { font: inherit; cursor: pointer; }
+  .escondido { display: none !important; }
+
+  /* ---------- Tela de entrada ---------- */
+  #entrada {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    padding: 24px 16px;
+    background: radial-gradient(circle at 50% 25%, #f59a9a 0%, #e63946 45%, #a3121b 100%);
+  }
+  .logo-grande { width: 150px; height: 150px; border-radius: 24px; display: block; margin: -4px auto 18px; box-shadow: 0 6px 18px rgba(163,18,27,.25); }
+
+  /* convite do WhatsApp e redes sociais */
+  .convite-zap {
+    display: flex; align-items: center; gap: 10px;
+    margin-top: 16px; padding: 12px 14px; border-radius: 12px;
+    background: #e7f8ee; color: #136c3a; text-decoration: none; text-align: left; font-size: 14px; line-height: 1.3;
+  }
+  .convite-zap svg { width: 28px; height: 28px; flex-shrink: 0; }
+  .convite-zap b { text-decoration: underline; }
+  .redes { display: flex; gap: 8px; margin-top: 10px; }
+  .rede {
+    flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+    padding: 11px 8px; border-radius: 12px; text-decoration: none; font-weight: 700; font-size: 14px; color: #fff;
+  }
+  .rede svg { width: 20px; height: 20px; flex-shrink: 0; }
+  .rede.zap { background: #25d366; }
+  .rede.yt { background: #e62117; }
+  .rede.ig { background: linear-gradient(45deg, #f9a13a, #e1306c 50%, #833ab4); }
+  .bloco-redes { margin-top: 22px; }
+  .bloco-redes b { display: block; font-size: 12px; color: var(--suave); font-weight: 600; margin-bottom: 2px; text-transform: uppercase; letter-spacing: .5px; }
+  .bloco-redes .redes { flex-wrap: wrap; }
+  .bloco-redes .rede { min-width: 100px; }
+  .caixa-entrada {
+    width: 100%; max-width: 380px;
+    background: var(--cartao);
+    border-radius: 20px;
+    padding: 28px 24px 24px;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0,0,0,.3);
+  }
+  .marca { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 22px; }
+  .marca h1 { font-family: "Bebas Neue", sans-serif; font-size: 34px; letter-spacing: 1px; margin: 0; line-height: .9; color: var(--verde); text-align: left; }
+  .marca h1 small { display: block; font-size: 17px; color: var(--ambar); letter-spacing: 2px; }
+  .escudo {
+    width: 56px; height: 56px; border-radius: 50%;
+    background: var(--ambar); color: var(--verde-escuro);
+    display: grid; place-items: center;
+    font-family: "Bebas Neue", sans-serif; font-size: 26px;
+    border: 3px solid var(--verde);
+    flex-shrink: 0; overflow: hidden;
+  }
+  .escudo img { width: 100%; height: 100%; object-fit: cover; }
+
+  .foto-grande {
+    width: 132px; height: 132px; margin: 0 auto 18px;
+    border-radius: 50%;
+    background: var(--fundo);
+    border: 4px solid var(--borda);
+    display: grid; place-items: center;
+    font-family: "Bebas Neue", sans-serif; font-size: 52px; color: var(--suave);
+    overflow: hidden;
+    transition: border-color .2s;
+  }
+  .foto-grande.ativa { border-color: var(--ambar); color: var(--verde); background: var(--ambar-claro); }
+  .foto-grande img { width: 100%; height: 100%; object-fit: cover; }
+  .foto-grande svg { width: 56px; height: 56px; opacity: .35; }
+
+  label.rotulo { display: block; text-align: left; font-size: 13px; font-weight: 600; color: var(--suave); margin-bottom: 6px; }
+  select {
+    width: 100%; padding: 13px 14px;
+    font: inherit; font-size: 16px;
+    border: 2px solid var(--borda); border-radius: 12px;
+    background: #fff; color: var(--texto);
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b6a65' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 14px center;
+  }
+  select:focus { outline: none; border-color: var(--verde); }
+
+  .botao {
+    border: 0; border-radius: 12px;
+    padding: 14px 18px;
+    font-weight: 700; font-size: 16px;
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .botao-principal { background: var(--verde); color: #fff; width: 100%; margin-top: 16px; }
+  .botao-principal:disabled { background: #b9c4be; cursor: not-allowed; }
+  .botao-pix { background: var(--ambar); color: var(--verde-escuro); }
+  .botao-sec { background: transparent; color: var(--verde); border: 2px solid var(--verde); }
+
+  /* ---------- Painel ---------- */
+  header.topo {
+    background: var(--verde); color: #fff;
+    padding: 14px 16px;
+    position: sticky; top: 0; z-index: 5;
+  }
+  .topo-dentro { max-width: 720px; margin: 0 auto; display: flex; align-items: center; gap: 12px; }
+  .topo .escudo { width: 40px; height: 40px; font-size: 19px; border-width: 2px; border-color: #fff; }
+  .topo .nome-time { font-family: "Bebas Neue", sans-serif; font-size: 22px; letter-spacing: 1px; line-height: 1; }
+  .topo .nome-time small { display: block; color: var(--ambar); font-size: 13px; letter-spacing: 2px; }
+  .topo .sair { margin-left: auto; background: rgba(255,255,255,.12); color: #fff; border: 0; border-radius: 10px; padding: 8px 12px; font-size: 14px; font-weight: 600; }
+
+  main { max-width: 720px; margin: 0 auto; padding: 20px 16px 48px; }
+
+  .perfil { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+  .perfil .foto-peq {
+    width: 60px; height: 60px; border-radius: 50%;
+    background: var(--ambar-claro); border: 3px solid var(--ambar);
+    display: grid; place-items: center; overflow: hidden;
+    font-family: "Bebas Neue", sans-serif; font-size: 26px; color: var(--verde);
+    flex-shrink: 0;
+  }
+  .perfil .foto-peq img { width: 100%; height: 100%; object-fit: cover; }
+  .perfil h2 { margin: 0; font-size: 20px; }
+  .perfil p { margin: 2px 0 0; color: var(--suave); font-size: 14px; }
+
+  .resumo {
+    background: var(--cartao); border: 1px solid var(--borda); border-radius: 16px;
+    padding: 6px 18px 18px; margin-bottom: 18px;
+  }
+  .linhas { display: flex; flex-direction: column; }
+  .linha {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 0; border: 0; border-bottom: 1px solid var(--borda);
+    background: none; text-align: left; color: var(--texto); width: 100%;
+  }
+  .linha span { flex: 1; font-weight: 600; font-size: 15px; }
+  .linha small { display: block; font-weight: 400; font-size: 12px; color: var(--suave); margin-top: 2px; }
+  .linha b { font-size: 17px; white-space: nowrap; }
+  .linha i { font-style: normal; color: var(--suave); font-size: 20px; line-height: 1; width: 10px; }
+  .linha:hover b { text-decoration: underline; }
+  .linha.total { border-bottom: 0; padding-top: 14px; }
+  .linha.total span { font-size: 16px; }
+  .resumo .num { font-family: "Bebas Neue", sans-serif; font-size: 36px; line-height: 1; font-weight: 400; }
+  .num.deve, .linha b.deve { color: var(--vermelho); }
+  .num.emdia, .linha b.emdia { color: var(--ok); }
+  .resumo .acoes-pix { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+  .resumo .acoes-pix .botao { padding: 11px 14px; font-size: 14px; flex: 1; }
+
+  .abas { display: flex; gap: 6px; background: #e8e3d7; padding: 5px; border-radius: 12px; margin-bottom: 14px; scroll-margin-top: 84px; }
+  .aba { flex: 1; border: 0; background: transparent; padding: 10px 6px; border-radius: 9px; font-weight: 600; color: var(--suave); font-size: 14px; line-height: 1.25; }
+  .aba.ativa { background: #fff; color: var(--verde); box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+  .aba .cont { display: inline-block; min-width: 20px; padding: 1px 6px; border-radius: 10px; background: var(--vermelho); color: #fff; font-size: 12px; margin-left: 4px; }
+
+  .lista { display: flex; flex-direction: column; gap: 10px; }
+  .item {
+    background: var(--cartao); border: 1px solid var(--borda); border-radius: 14px;
+    padding: 14px 16px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .item .ref { font-weight: 700; font-size: 16px; }
+  .item .det { font-size: 13px; color: var(--suave); margin-top: 3px; }
+  .item .valor { margin-left: auto; text-align: right; font-weight: 700; font-size: 17px; white-space: nowrap; }
+  .tag { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; padding: 3px 8px; border-radius: 6px; margin-top: 5px; }
+  .tag.vencida { background: var(--vermelho-claro); color: var(--vermelho); }
+  .tag.avencer { background: var(--ambar-claro); color: #9a6400; }
+  .tag.paga { background: var(--ok-claro); color: var(--ok); }
+  .tag.isento { background: #ecebe7; color: var(--suave); }
+  .tag.dividido { background: #e6ecfa; color: var(--verde); }
+
+  /* histórico em duas colunas: Pix recebidos | por mês */
+  .hist-duas { display: grid; gap: 16px; align-items: start; }
+  .coluna h3 { margin: 0 0 10px; font-size: 13px; text-transform: uppercase; letter-spacing: .5px; color: var(--suave); }
+  .sub-abas { display: flex; gap: 6px; margin-bottom: 12px; }
+  .sub { flex: 1; border: 2px solid var(--borda); background: #fff; color: var(--suave); border-radius: 10px; padding: 8px; font-weight: 600; font-size: 14px; }
+  .sub.ativa { border-color: var(--verde); color: var(--verde); }
+  @media (max-width: 759px) {
+    .coluna.oculta { display: none; }
+    .coluna h3 { display: none; }
+  }
+  @media (min-width: 760px) {
+    main { max-width: 960px; }
+    .hist-duas { grid-template-columns: 1fr 1fr; }
+    .sub-abas { display: none; }
+  }
+  .pix { background: var(--cartao); border: 1px solid var(--borda); border-left: 5px solid var(--ok); border-radius: 14px; padding: 14px 16px; }
+  .pix-topo { display: flex; align-items: flex-start; gap: 12px; }
+  .pix-topo .ref { font-weight: 700; font-size: 16px; }
+  .pix-topo .det { font-size: 13px; color: var(--suave); margin-top: 3px; }
+  .pix-topo .valor { margin-left: auto; font-weight: 700; font-size: 18px; color: var(--ok); white-space: nowrap; }
+  .pix ul { list-style: none; margin: 10px 0 0; padding: 10px 0 0; border-top: 1px dashed var(--borda); font-size: 14px; }
+  .pix li { display: flex; justify-content: space-between; gap: 10px; padding: 3px 0; }
+  .pix li em { color: var(--suave); font-size: 12px; }
+  .item.antigo { background: #fbf6ea; border-color: #ead9b0; border-left: 5px solid #8a6a2b; }
+  .barra { height: 6px; width: 160px; max-width: 100%; background: #ead9b0; border-radius: 3px; margin-top: 8px; overflow: hidden; }
+  .barra span { display: block; height: 100%; background: var(--ok); }
+
+  .vazio { text-align: center; padding: 36px 16px; color: var(--suave); background: var(--cartao); border: 1px dashed var(--borda); border-radius: 14px; }
+  .vazio .emoji { font-size: 40px; display: block; margin-bottom: 8px; }
+
+  .chave-pix { margin-top: 22px; background: var(--cartao); border: 1px solid var(--borda); border-radius: 14px; padding: 14px 16px; font-size: 14px; }
+  .chave-pix b { display: block; font-size: 12px; color: var(--suave); font-weight: 600; margin-bottom: 4px; text-transform: uppercase; letter-spacing: .5px; }
+  .chave-pix code { font-size: 15px; word-break: break-all; }
+
+  .aviso {
+    position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 20px);
+    background: var(--texto); color: #fff; padding: 12px 18px; border-radius: 12px;
+    font-weight: 600; font-size: 14px; opacity: 0; pointer-events: none;
+    transition: opacity .2s, transform .2s; z-index: 20;
+  }
+  .aviso.mostrar { opacity: 1; transform: translate(-50%, 0); }
+  .rodape { text-align: center; font-size: 12px; color: var(--suave); margin-top: 28px; }
+
+  .resumo-antigo { background: #fbf6ea; border: 1px solid #ead9b0; border-radius: 14px; padding: 16px; }
+  .resumo-antigo .topo-antigo { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+  .resumo-antigo .topo-antigo b { font-size: 15px; }
+  .resumo-antigo .topo-antigo strong { font-family: "Bebas Neue", sans-serif; font-size: 30px; font-weight: 400; color: var(--vermelho); }
+  .resumo-antigo .barra { width: 100%; height: 8px; margin-top: 10px; }
+  .resumo-antigo p { margin: 8px 0 0; font-size: 13px; color: var(--suave); }
+</style>
+</head>
+<body>
+
+<!-- ================= TELA 1: ENTRADA ================= -->
+<section id="entrada">
+  <div class="caixa-entrada">
+    <img class="logo-grande" id="logoGrande" alt="10 e Pouco - Futebol e Cerveja">
+
+    <div class="foto-grande" id="fotoGrande">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-4.4 0-8 2.2-8 5v1h16v-1c0-2.8-3.6-5-8-5Z"/></svg>
+    </div>
+
+    <label class="rotulo" for="seletor">Quem é você?</label>
+    <select id="seletor"><option value="">Selecione seu nome…</option></select>
+    <button class="botao botao-principal" id="btnEntrar" disabled>Entrar</button>
+
+    <a class="convite-zap" data-link="whatsappGrupo" target="_blank" rel="noopener">
+      <span data-icone="zap"></span>
+      <span>Não está no grupo geral da resenha? <b>Clique aqui e entre</b></span>
+    </a>
+    <div class="redes">
+      <a class="rede yt" data-link="youtube" target="_blank" rel="noopener"><span data-icone="yt"></span>YouTube</a>
+      <a class="rede ig" data-link="instagram" target="_blank" rel="noopener"><span data-icone="ig"></span>Instagram</a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TELA 2: PAINEL DO JOGADOR ================= -->
+<section id="painel" class="escondido">
+  <header class="topo">
+    <div class="topo-dentro">
+      <div class="escudo" data-escudo></div>
+      <div class="nome-time"><span data-time></span><small data-subtitulo></small></div>
+      <button class="sair" id="btnSair">Trocar jogador</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="perfil">
+      <div class="foto-peq" id="fotoPeq"></div>
+      <div>
+        <h2 id="nomeJogador"></h2>
+        <p id="saudacao"></p>
+      </div>
+    </div>
+
+    <div class="resumo">
+      <div class="linhas">
+        <button class="linha" data-ir="aberto">
+          <span>Débito atual<small id="legAtual"></small></span><b id="vAtual"></b><i>›</i>
+        </button>
+        <button class="linha" data-ir="antigo">
+          <span>Débito anterior<small id="legAnterior"></small></span><b id="vAnterior"></b><i>›</i>
+        </button>
+        <div class="linha total">
+          <span>Débito total</span><b class="num" id="totalAberto"></b>
+        </div>
+      </div>
+      <div class="acoes-pix">
+        <button class="botao botao-pix" id="btnCopiaCola">Pix copia e cola</button>
+        <button class="botao botao-sec" id="btnChave">Copiar chave</button>
+      </div>
+    </div>
+
+    <div class="abas">
+      <button class="aba ativa" data-aba="aberto">Em aberto <span class="cont" id="contAberto"></span></button>
+      <button class="aba" data-aba="antigo">Em aberto antigos <span class="cont" id="contAntigo"></span></button>
+      <button class="aba" data-aba="historico">Histórico</button>
+    </div>
+
+    <div class="lista" id="listaAberto"></div>
+    <div class="lista escondido" id="listaAntigo"></div>
+    <div class="escondido" id="listaHistorico">
+      <div class="sub-abas">
+        <button class="sub ativa" data-sub="pix">Pagamentos recebidos</button>
+        <button class="sub" data-sub="mes">Por mês</button>
+      </div>
+      <div class="hist-duas">
+        <div class="coluna" data-col="pix"><h3>Pagamentos recebidos</h3><div class="lista" id="histPix"></div></div>
+        <div class="coluna oculta" data-col="mes"><h3>Por mês</h3><div class="lista" id="histMes"></div></div>
+      </div>
+    </div>
+
+    <div class="chave-pix">
+      <b>Chave Pix do time</b>
+      <code id="textoChave"></code>
+      <div class="det" style="color:var(--suave);margin-top:4px;" id="textoRecebedor"></div>
+    </div>
+
+    <div class="bloco-redes">
+      <b>10 e Pouco nas redes</b>
+      <div class="redes">
+        <a class="rede zap" data-link="whatsappGrupo" target="_blank" rel="noopener"><span data-icone="zap"></span>Grupo</a>
+        <a class="rede yt" data-link="youtube" target="_blank" rel="noopener"><span data-icone="yt"></span>YouTube</a>
+        <a class="rede ig" data-link="instagram" target="_blank" rel="noopener"><span data-icone="ig"></span>Instagram</a>
+      </div>
+    </div>
+
+    <p class="rodape">Pagou? Mande o comprovante no grupo. A baixa aparece aqui assim que o tesoureiro atualizar.</p>
+  </main>
+</section>
+
+<div class="aviso" id="aviso"></div>
+
+<script src="dados.js"></script>
+<script>
+(function () {
+  const C = window.CONFIG;
+  let jogadores = [], atual = null;
+
+  // ---------- utilidades ----------
+  const $ = (s) => document.querySelector(s);
+  const real = (v) => Number(v || 0).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+  const iniciais = (n) => n.trim().split(/\s+/).filter(Boolean).map((p) => p[0]).slice(0, 2).join("").toUpperCase();
+  const semAcento = (s) => String(s).normalize("NFD").replace(/[̀-ͯ]/g, "");
+
+  function data(s) {
+    if (!s) return null;
+    s = String(s).trim();
+    let m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{2,4})$/);
+    if (m) return new Date(+(m[3].length === 2 ? "20" + m[3] : m[3]), m[2] - 1, +m[1]);
+    m = s.match(/^(\d{4})-(\d{2})-(\d{2})/);
+    if (m) return new Date(+m[1], m[2] - 1, +m[3]);
+    return null;
+  }
+  const dataBR = (d) => (d ? d.toLocaleDateString("pt-BR") : "—");
+  const numero = (v) => typeof v === "number" ? v : Number(String(v).replace(/[^\d,.-]/g, "").replace(/\.(?=\d{3})/g, "").replace(",", ".")) || 0;
+  const escapa = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+  const MESES = ["janeiro", "fevereiro", "marco", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
+  // "Agosto/2026" -> { mes: 7, ano: 2026, chave: 2026*12+7 }
+  function mesAno(s) {
+    const m = semAcento(s).trim().toLowerCase().match(/^([a-z]+)\s*\/\s*(\d{4})$/);
+    if (!m || MESES.indexOf(m[1]) < 0) return null;
+    const mes = MESES.indexOf(m[1]), ano = +m[2];
+    return { mes, ano, chave: ano * 12 + mes };
+  }
+
+  function avisar(msg) {
+    const a = $("#aviso");
+    a.textContent = msg;
+    a.classList.add("mostrar");
+    clearTimeout(avisar.t);
+    avisar.t = setTimeout(() => a.classList.remove("mostrar"), 2200);
+  }
+
+  async function copiar(texto, msg) {
+    try { await navigator.clipboard.writeText(texto); }
+    catch (e) {
+      const t = document.createElement("textarea");
+      t.value = texto; document.body.appendChild(t); t.select();
+      document.execCommand("copy"); t.remove();
+    }
+    avisar(msg);
+  }
+
+  // "Denis Kühn" -> "denis-kuhn"  (nome do arquivo em fotos/)
+  const arquivo = (n) => semAcento(n).toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+
+  // tenta fotos/<nome>.jpg, .jpeg, .png e .webp; se não achar, mostra as iniciais
+  function foto(el, j) {
+    const opcoes = [j.foto, ...["jpg", "jpeg", "png", "webp"].map((ext) => `fotos/${arquivo(j.nome)}.${ext}`)].filter(Boolean);
+    el.textContent = iniciais(j.nome);
+    const tentar = (i) => {
+      if (i >= opcoes.length) return;
+      const img = new Image();
+      img.alt = j.nome;
+      img.onload = () => { if (el.dataset.nome === j.nome) { el.innerHTML = ""; el.appendChild(img); } };
+      img.onerror = () => tentar(i + 1);
+      img.src = opcoes[i];
+    };
+    el.dataset.nome = j.nome;
+    tentar(0);
+  }
+
+  // ---------- Pix copia e cola (padrão BR Code do Banco Central) ----------
+  function pixPayload(valor) {
+    const f = (id, v) => id + String(v.length).padStart(2, "0") + v;
+    const limpa = (s, n) => semAcento(s).toUpperCase().replace(/[^A-Z0-9 ]/g, "").slice(0, n);
+    let p = f("00", "01")
+      + f("26", f("00", "br.gov.bcb.pix") + f("01", C.pixChave.trim()))
+      + f("52", "0000") + f("53", "986")
+      + (valor > 0 ? f("54", valor.toFixed(2)) : "")
+      + f("58", "BR") + f("59", limpa(C.pixNome, 25)) + f("60", limpa(C.pixCidade, 15))
+      + f("62", f("05", "***")) + "6304";
+    let crc = 0xffff;
+    for (let i = 0; i < p.length; i++) {
+      crc ^= p.charCodeAt(i) << 8;
+      for (let b = 0; b < 8; b++) crc = crc & 0x8000 ? (crc << 1) ^ 0x1021 : crc << 1;
+      crc &= 0xffff;
+    }
+    return p + crc.toString(16).toUpperCase().padStart(4, "0");
+  }
+
+  // ---------- leitura da aba do jogador no Google Planilhas ----------
+  function csv(texto) {
+    const linhas = []; let linha = [], campo = "", aspas = false;
+    for (let i = 0; i < texto.length; i++) {
+      const c = texto[i];
+      if (aspas) {
+        if (c === '"' && texto[i + 1] === '"') { campo += '"'; i++; }
+        else if (c === '"') aspas = false;
+        else campo += c;
+      } else if (c === '"') aspas = true;
+      else if (c === ",") { linha.push(campo); campo = ""; }
+      else if (c === "\n" || c === "\r") {
+        if (c === "\r" && texto[i + 1] === "\n") i++;
+        linha.push(campo); linhas.push(linha); linha = []; campo = "";
+      } else campo += c;
+    }
+    if (campo || linha.length) { linha.push(campo); linhas.push(linha); }
+    return linhas.map((l) => l.map((x) => x.trim()));
+  }
+
+  // Colunas da aba: A = Mês jogado | B = Valor devido | C = Valor pago | D = Data de pagamento
+  // usa o export CSV (pela gid da aba) porque ele mantém o texto "-" das colunas de valor
+  async function lerAba(j) {
+    const url = `https://docs.google.com/spreadsheets/d/${C.planilhaId}/export?format=csv&gid=${j.gid}&t=${Date.now()}`;
+    const r = await fetch(url, { cache: "no-store" });
+    if (!r.ok) throw new Error("aba " + j.nome + " não encontrada");
+    const inicio = mesAno(C.inicioMensalidade).chave;
+    const abertas = [], isentos = [], historico = [], mesesAntigos = [];
+    let devidoAntigo = 0, pagoAntigo = 0;
+
+    csv(await r.text()).forEach(([mesTxt = "", devTxt = "", pagoTxt = "", dataTxt = ""]) => {
+      const m = mesAno(mesTxt);
+      if (!m) return;
+      const isento = devTxt.includes("-") && !/\d/.test(devTxt);
+      const pago = numero(pagoTxt);
+      // a célula pode ter várias datas ("18/02/2025 | 09/09/2025") quando o pagamento foi dividido
+      const datas = (dataTxt.match(/\d{1,2}\/\d{1,2}\/\d{2,4}/g) || []).map(data).filter(Boolean);
+      const quando = datas[datas.length - 1] || null;
+
+      if (m.chave < inicio) {
+        // até julho/2026: tudo vira um débito antigo só
+        const devido = isento ? 0 : numero(devTxt);
+        devidoAntigo += devido;
+        pagoAntigo += pago;
+        mesesAntigos.push({ ref: mesTxt, chave: m.chave, devido, pago });
+        if (pago > 0) historico.push({ ref: "Débito antigo · " + mesTxt, quando, datas, valor: pago, devido, chave: m.chave });
+        return;
+      }
+
+      // de agosto/2026 em diante: mensalidade
+      if (isento) {
+        isentos.push({ ref: mesTxt, chave: m.chave, valor: 0, isento: true });
+        historico.push({ ref: mesTxt, quando: null, valor: 0, isento: true, chave: m.chave });
+        return;
+      }
+      const devido = devTxt ? numero(devTxt) : C.valorMensalidade;
+      const quitada = pago >= devido || (dataTxt && pago === 0);
+      if (pago > 0 || quitada) historico.push({ ref: mesTxt, quando, datas, valor: pago || devido, devido, chave: m.chave });
+      if (!quitada && devido - pago > 0) {
+        abertas.push({
+          ref: mesTxt, chave: m.chave, valor: devido - pago,
+          vencimento: new Date(m.ano, m.mes, C.diaVencimento),
+          obs: pago > 0 ? `pagamento parcial: pagou ${real(pago)} de ${real(devido)}${datas.length ? " em " + datas.map(dataBR).join(" e ") : ""}` : ""
+        });
+      }
+    });
+
+    abertas.sort((a, b) => a.chave - b.chave);
+    historico.sort((a, b) => (b.quando || 0) - (a.quando || 0) || (b.chave || 0) - (a.chave || 0));
+    const restante = Math.max(0, devidoAntigo - pagoAntigo);
+
+    // meses antigos em aberto: usa o que está marcado em cada linha; se a soma não bater com o
+    // saldo (ex.: pagamento grande lançado num mês só), abate os pagamentos do mais antigo pro mais novo
+    mesesAntigos.sort((a, b) => a.chave - b.chave);
+    let antigos = mesesAntigos.filter((x) => x.devido > x.pago)
+      .map((x) => ({ ref: x.ref, chave: x.chave, valor: x.devido - x.pago, obs: x.pago > 0 ? `pagou ${real(x.pago)} de ${real(x.devido)}` : "" }));
+    if (Math.abs(antigos.reduce((s, x) => s + x.valor, 0) - restante) > 0.005) {
+      let credito = pagoAntigo;
+      antigos = [];
+      mesesAntigos.forEach((x) => {
+        const usado = Math.min(credito, x.devido);
+        credito -= usado;
+        if (x.devido - usado > 0) antigos.push({ ref: x.ref, chave: x.chave, valor: x.devido - usado, obs: usado > 0 ? `abatido ${real(usado)}` : "" });
+      });
+    }
+    antigos.sort((a, b) => b.chave - a.chave);
+
+    return { abertas, isentos, historico, antigos, debito:{ total: devidoAntigo, pago: pagoAntigo, restante } };
+  }
+
+  // Lista de jogadores = abas VISÍVEIS da planilha (aba oculta não aparece no site)
+  async function lerJogadores() {
+    const t = await fetch(`https://docs.google.com/spreadsheets/d/${C.planilhaId}/htmlview?t=${Date.now()}`, { cache: "no-store" })
+      .then((r) => r.text());
+    const ignorar = (C.abasIgnoradas || []).map((n) => semAcento(n).toLowerCase());
+    const fotos = window.FOTOS || {};
+    return [...t.matchAll(/items\.push\(\{name: "((?:[^"\\]|\\.)*)", pageUrl: "[^"]*", gid: "(\d+)"/g)]
+      .map((m) => ({ nome: JSON.parse(`"${m[1]}"`).trim(), gid: m[2] }))
+      .filter((j) => j.nome && !ignorar.includes(semAcento(j.nome).toLowerCase()))
+      .map((j) => ({ ...j, foto: fotos[j.nome] || "" }))
+      .sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"));
+  }
+
+  // ---------- tela de entrada ----------
+  function montarEntrada() {
+    document.querySelectorAll("[data-time]").forEach((e) => (e.textContent = C.time));
+    document.querySelectorAll("[data-subtitulo]").forEach((e) => (e.textContent = C.subtitulo));
+    document.querySelectorAll("[data-escudo]").forEach((e) => {
+      if (C.logo) e.innerHTML = `<img src="${C.logo}" alt="${C.time}">`;
+      else e.textContent = "10";
+    });
+    if (C.logo) $("#logoGrande").src = C.logo; else $("#logoGrande").remove();
+
+    // links do grupo e das redes (some o botão se o link estiver vazio no dados.js)
+    const ICONES = {
+      zap: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.3c0-.1-.2-.2-.4-.3Z"/></svg>',
+      yt: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M23 7.2a3 3 0 0 0-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.9.5A3 3 0 0 0 1 7.2 31 31 0 0 0 .5 12a31 31 0 0 0 .5 4.8 3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1 31 31 0 0 0 .5-4.8 31 31 0 0 0-.5-4.8ZM9.7 15.1V8.9L15.5 12l-5.8 3.1Z"/></svg>',
+      ig: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>'
+    };
+    document.querySelectorAll("[data-icone]").forEach((e) => (e.outerHTML = ICONES[e.dataset.icone]));
+    document.querySelectorAll("[data-link]").forEach((a) => {
+      const url = (C.links || {})[a.dataset.link];
+      if (url) a.href = url; else a.remove();
+    });
+
+    const sel = $("#seletor");
+    jogadores.forEach((j, i) => sel.add(new Option(j.nome, i)));
+    const vazioFoto = $("#fotoGrande").innerHTML;
+
+    sel.addEventListener("change", () => {
+      const j = jogadores[sel.value];
+      const fg = $("#fotoGrande");
+      if (j) { foto(fg, j); fg.classList.add("ativa"); }
+      else { fg.innerHTML = vazioFoto; fg.classList.remove("ativa"); }
+      $("#btnEntrar").disabled = !j;
+    });
+
+    $("#btnEntrar").addEventListener("click", async () => {
+      const j = jogadores[sel.value], b = $("#btnEntrar");
+      b.disabled = true; b.textContent = "Carregando…";
+      try { abrirPainel(j, await lerAba(j)); }
+      catch (e) { avisar("Não consegui ler a planilha. Tente de novo."); }
+      b.disabled = false; b.textContent = "Entrar";
+    });
+  }
+
+  // ---------- painel ----------
+  function abrirPainel(j, d) {
+    atual = j;
+    try { localStorage.setItem("jogador10ePouco", j.nome); } catch (e) {}
+    $("#entrada").classList.add("escondido");
+    $("#painel").classList.remove("escondido");
+    window.scrollTo(0, 0);
+
+    foto($("#fotoPeq"), j);
+    $("#nomeJogador").textContent = j.nome;
+
+    const hoje = new Date(); hoje.setHours(0, 0, 0, 0);
+    const { abertas, isentos, historico, antigos, debito } = d;
+    const totalMens = abertas.reduce((s, m) => s + m.valor, 0);
+    const total = totalMens + debito.restante;
+    const vencidas = abertas.filter((m) => m.vencimento < hoje).length;
+    atual.total = total;
+    const plural = (n, s) => `${n} ${s}${n > 1 ? "s" : ""}`;
+    const pinta = (el, v) => { el.textContent = v > 0 ? real(v) : "R$ 0,00"; el.classList.toggle("deve", v > 0); el.classList.toggle("emdia", !(v > 0)); };
+
+    // resumo em 3 linhas
+    pinta($("#vAtual"), totalMens);
+    pinta($("#vAnterior"), debito.restante);
+    const txtIsento = isentos.length ? ` · ${isentos.length} ${isentos.length > 1 ? "meses isentos" : "mês isento"}` : "";
+    $("#legAtual").textContent = (abertas.length
+      ? `${plural(abertas.length, "mensalidade")} desde ago/2026${vencidas ? ` · ${plural(vencidas, "vencida")}` : ""}`
+      : "Mensalidades desde ago/2026 em dia") + txtIsento;
+    $("#legAnterior").textContent = debito.restante > 0
+      ? `Até jul/2026${debito.pago > 0 ? ` · já pagou ${real(debito.pago)} de ${real(debito.total)}` : ""}`
+      : "Até jul/2026 · quitado";
+    $("#totalAberto").textContent = total > 0 ? real(total) : "Em dia! 🍺";
+    $("#totalAberto").className = "num " + (total > 0 ? "deve" : "emdia");
+
+    $("#saudacao").textContent = total > 0 ? "Confira suas pendências abaixo" : "Tudo pago, a cerveja tá garantida";
+    $("#btnCopiaCola").textContent = total > 0 ? `Pix copia e cola · ${real(total)}` : "Pix copia e cola";
+    $("#contAberto").textContent = abertas.length;
+    $("#contAberto").classList.toggle("escondido", !abertas.length);
+    $("#contAntigo").textContent = antigos.length;
+    $("#contAntigo").classList.toggle("escondido", !antigos.length);
+
+    // aba "Em aberto antigos"
+    const pct = debito.total > 0 ? Math.round(debito.pago / debito.total * 100) : 100;
+    $("#listaAntigo").innerHTML = debito.restante > 0 ? `<div class="resumo-antigo">
+        <div class="topo-antigo"><b>${C.rotuloDebitoAntigo}</b><strong>${real(debito.restante)}</strong></div>
+        <div class="barra"><span style="width:${pct}%"></span></div>
+        <p>Já pagou ${real(debito.pago)} de ${real(debito.total)} (${pct}%). Pode pagar aos poucos.</p>
+      </div>` + antigos.map((m) => `<div class="item">
+        <div>
+          <div class="ref">${escapa(m.ref)}</div>
+          ${m.obs ? `<div class="det">${m.obs}</div>` : ""}
+          <span class="tag vencida">Em aberto</span>
+        </div>
+        <div class="valor">${real(m.valor)}</div>
+      </div>`).join("")
+      : `<div class="vazio"><span class="emoji">🍻</span>Nenhum débito anterior a agosto/2026.</div>`;
+
+    // mensalidades cobradas + meses isentos ("-" na planilha), em ordem de mês
+    const mesesAtuais = [...abertas, ...isentos].sort((a, b) => a.chave - b.chave);
+    $("#listaAberto").innerHTML = (mesesAtuais.length ? mesesAtuais.map((m) => {
+      if (m.isento) return `<div class="item">
+        <div>
+          <div class="ref">${escapa(m.ref)}</div>
+          <div class="det">Mês sem cobrança</div>
+          <span class="tag isento">Isento</span>
+        </div>
+        <div class="valor">${real(0)}</div>
+      </div>`;
+      const venc = m.vencimento < hoje;
+      return `<div class="item">
+        <div>
+          <div class="ref">${escapa(m.ref)}</div>
+          <div class="det">Vencimento: ${dataBR(m.vencimento)}${m.obs ? " · " + m.obs : ""}</div>
+          <span class="tag ${venc ? "vencida" : "avencer"}">${venc ? "Vencida" : "A vencer"}</span>
+        </div>
+        <div class="valor">${real(m.valor)}</div>
+      </div>`;
+    }).join("") : `<div class="vazio"><span class="emoji">⚽</span>Nenhuma mensalidade em aberto desde agosto/2026.</div>`);
+
+    // histórico "Pagamentos recebidos": junta tudo que foi pago na mesma data num Pix só.
+    // Mês pago em várias datas tem o valor dividido igualmente entre elas (a planilha só guarda o total).
+    const porData = new Map();
+    historico.filter((h) => !h.isento).forEach((h) => {
+      const datas = h.datas && h.datas.length ? h.datas : [h.quando];
+      datas.forEach((d, i) => {
+        const k = d ? d.getTime() : 0;
+        if (!porData.has(k)) porData.set(k, { quando: d, total: 0, itens: [] });
+        const p = porData.get(k), valor = h.valor / datas.length;
+        p.total += valor;
+        p.itens.push({ ref: h.ref, valor, parte: datas.length > 1 ? `${i + 1}ª parte` : "", chave: h.chave || 0 });
+      });
+    });
+    const pagamentos = [...porData.values()].sort((a, b) => (b.quando || 0) - (a.quando || 0));
+    $("#histPix").innerHTML = pagamentos.length ? pagamentos.map((p) => `<div class="pix">
+        <div class="pix-topo">
+          <div><div class="ref">${p.quando ? "Pix de " + dataBR(p.quando) : "Pagamento sem data"}</div>
+          <div class="det">Referente a ${p.itens.length} ${p.itens.length > 1 ? "mensalidades" : "mensalidade"}</div></div>
+          <div class="valor">${real(p.total)}</div>
+        </div>
+        <ul>${p.itens.sort((a, b) => a.chave - b.chave).map((i) => `<li>
+          <span>${escapa(i.ref)}${i.parte ? ` <em>(${i.parte})</em>` : ""}</span><span>${real(i.valor)}</span></li>`).join("")}
+        </ul>
+      </div>`).join("") : `<div class="vazio"><span class="emoji">📄</span>Nenhum pagamento registrado ainda.</div>`;
+
+    $("#histMes").innerHTML = historico.length ? historico.map((h) => {
+      if (h.isento) return `<div class="item">
+        <div>
+          <div class="ref">${escapa(h.ref)}</div>
+          <div class="det">Mês sem cobrança</div>
+          <span class="tag isento">Isento</span>
+        </div>
+        <div class="valor">—</div>
+      </div>`;
+      const datas = h.datas || [];
+      const quando = datas.length > 1
+        ? "Pago em " + datas.length + " partes: " + datas.map(dataBR).join(" e ")
+        : "Pago em " + dataBR(h.quando);
+      const parcial = h.devido > 0 && h.valor < h.devido;
+      const etiquetas = [
+        parcial ? `<span class="tag avencer">Pagamento parcial · ${real(h.valor)} de ${real(h.devido)}</span>`
+                : `<span class="tag paga">Pago</span>`,
+        datas.length > 1 ? `<span class="tag dividido">Pagamento dividido</span>` : ""
+      ].join(" ");
+      return `<div class="item">
+        <div>
+          <div class="ref">${escapa(h.ref)}</div>
+          <div class="det">${quando}</div>
+          ${etiquetas}
+        </div>
+        <div class="valor">${real(h.valor)}</div>
+      </div>`;
+    }).join("") : `<div class="vazio"><span class="emoji">📄</span>Nenhum pagamento registrado ainda.</div>`;
+
+    $("#textoChave").textContent = C.pixChave;
+    $("#textoRecebedor").textContent = [C.pixNome, C.pixBanco].filter(Boolean).join(" · ");
+    trocarAba("aberto");
+  }
+
+  function trocarAba(qual) {
+    document.querySelectorAll(".aba").forEach((b) => b.classList.toggle("ativa", b.dataset.aba === qual));
+    $("#listaAberto").classList.toggle("escondido", qual !== "aberto");
+    $("#listaAntigo").classList.toggle("escondido", qual !== "antigo");
+    $("#listaHistorico").classList.toggle("escondido", qual !== "historico");
+  }
+
+  document.querySelectorAll(".aba").forEach((b) => b.addEventListener("click", () => trocarAba(b.dataset.aba)));
+  // no celular, o histórico mostra uma coluna por vez
+  document.querySelectorAll(".sub").forEach((b) => b.addEventListener("click", () => {
+    document.querySelectorAll(".sub").forEach((x) => x.classList.toggle("ativa", x === b));
+    document.querySelectorAll(".coluna").forEach((c) => c.classList.toggle("oculta", c.dataset.col !== b.dataset.sub));
+  }));
+  // clicar numa linha do resumo abre a aba correspondente
+  document.querySelectorAll(".linha[data-ir]").forEach((b) => b.addEventListener("click", () => {
+    trocarAba(b.dataset.ir);
+    $(".abas").scrollIntoView({ behavior: "smooth", block: "start" });
+  }));
+  $("#btnChave").addEventListener("click", () => copiar(C.pixChave, "Chave Pix copiada!"));
+  $("#btnCopiaCola").addEventListener("click", () =>
+    copiar(pixPayload(atual.total || 0), atual.total ? `Pix de ${real(atual.total)} copiado! Cole no app do banco.` : "Pix copiado!"));
+  $("#btnSair").addEventListener("click", () => {
+    try { localStorage.removeItem("jogador10ePouco"); } catch (e) {}
+    $("#painel").classList.add("escondido");
+    $("#entrada").classList.remove("escondido");
+  });
+
+  $("#seletor").options[0].text = "Carregando jogadores…";
+  lerJogadores().then((lista) => {
+    jogadores = lista;
+    $("#seletor").options[0].text = "Selecione seu nome…";
+    montarEntrada();
+    let salvo = null;
+    try { salvo = localStorage.getItem("jogador10ePouco"); } catch (e) {}
+    const j = salvo && jogadores.find((x) => x.nome === salvo);
+    if (j) { $("#seletor").value = jogadores.indexOf(j); $("#seletor").dispatchEvent(new Event("change")); }
+  }).catch(() => {
+    $("#seletor").options[0].text = "Erro ao carregar a planilha";
+    if (location.protocol === "file:")
+      avisar("Abra pelo abrir-site.bat (dois cliques no index.html não funciona)");
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+FOTOS DOS JOGADORES
+===================
+Coloque aqui a foto de cada jogador com o nome da aba da planilha,
+tudo minusculo, sem acento, e com "-" no lugar do espaco.
+Pode ser .jpg, .jpeg, .png ou .webp. Foto quadrada fica melhor.
+
+  Baiak          -> baiak.jpg
+  Bruno          -> bruno.jpg
+  Denis Kühn     -> denis-kuhn.jpg
+  Evandro        -> evandro.jpg
+  Gabriel        -> gabriel.jpg
+  Guilherme      -> guilherme.jpg
+  Henrique Otto  -> henrique-otto.jpg
+  Luan           -> luan.jpg
+  Marcelo Negri  -> marcelo-negri.jpg
+  Michael        -> michael.jpg
+  MK             -> mk.jpg
+  Paulo Stempim  -> paulo-stempim.jpg
+  Rogê           -> roge.jpg
+  Welington      -> welington.jpg
+
+Sem foto = aparecem as iniciais do nome.
