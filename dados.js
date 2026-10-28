@@ -23,6 +23,7 @@ window.CONFIG = {
   // Cada aba VISÍVEL vira um jogador. Ocultou a aba na planilha = some do site.
   planilhaId: "1mp4lEslqRAn-5F989zbePUuxutMx8D5qI76pqaat8ms",
   abasIgnoradas: ["CAIXA"],         // abas visíveis que NÃO são jogadores
+  atualizacao: { aba: "CAIXA", celula: "B16" }, // célula com "28/10 às 13h" -> "Caixa atualizado em 28/10 às 13h"
 
   // Regras da mensalidade
   inicioMensalidade: "Agosto/2026", // deste mês em diante = mensalidade; antes = débito antigo
